@@ -1,7 +1,14 @@
 import ActionCable from 'actioncable'
 
-const WS_URL = 'wss://fcf33338876e44059c239ba1b1bf947f.vfs.cloud9.ap-northeast-1.amazonaws.com/cable'
+const WS_URL = 'ws://airhost:3000/cable'
 const CHANNEL = { channel: 'VideoChatsChannel' }
+
+const playSound = ({ filename, duration = 5000 }) => {
+  const audio = new Audio(chrome.runtime.getURL(filename))
+  audio.loop = true
+  audio.play()
+  setTimeout(() => audio.pause(), duration)
+}
 
 function postNotification () {
   chrome.notifications.create({
@@ -22,5 +29,15 @@ cable.subscriptions.create(CHANNEL, {
     if (data.type === 'new_video_chat') {
       postNotification()
     }
+  }
+})
+
+chrome.runtime.onMessage.addListener(message => {
+  console.log(message)
+  if (message.type === 'play_sound') {
+    playSound({
+      filename: message.filename,
+      duration: 2000
+    })
   }
 })
