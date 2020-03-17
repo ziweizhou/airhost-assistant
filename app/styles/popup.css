@@ -1,0 +1,11 @@
+html {
+  width: auto !important;
+  height: auto !important;
+}
+
+body {
+  width: 300px !important;
+  height: auto !important;
+  min-height: 100px;
+  padding: 10px;
+}
