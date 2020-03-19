@@ -1,33 +1,30 @@
-import { playSound } from './lib/sounds'
+import { playSound, stopSound } from './lib/sounds'
+import cache from './lib/cache'
+import { getSettings } from './lib/settings'
 
 const VIDEO_CALLS_URL = 'http://airhost:3000/video_chats'
 
 function postNotification () {
-  chrome.storage.local.get(settings => {
-    console.log(settings)
-    
+  getSettings().then(settings => {    
     if (settings.enabled) {
       chrome.notifications.create({
         type: 'basic',
         title: 'New Video Call',
         message: 'New video chat requested.',
         iconUrl: 'images/icon-128.png',
-        isClickable: true
+        requireInteraction: true
       })
       
-      playSound(settings.ringtone)
+      playSound(settings.ringtone, settings.duration * 1000)
     }
   })
 }
 
-chrome.runtime.onMessage.addListener(message => {
+chrome.runtime.onMessageExternal.addListener(message => {
   console.log('received message', message)
   switch (message.type) {
-    case 'connected':
-      window.localStorage['connected'] = '1'
-      break
-    case 'disconnected':
-      window.localStorage['connected'] = '0'
+    case 'ping':
+      cache.set('connected', true, 7)
       break
     case 'new_video_chat':
       postNotification()
@@ -37,10 +34,8 @@ chrome.runtime.onMessage.addListener(message => {
   return true
 })
 
-chrome.tabs.onRemoved.addListener(tabId => {
-  if (String(tabId) === window.localStorage['agent_tab_id']) {
-    delete window.localStorage['agent_tab_id']
-    delete window.localStorage['connected']
-    chrome.runtime.sendMessage({ type: 'disconnected' })
-  }
+chrome.notifications.onClicked.addListener(notifyId => {
+  chrome.tabs.create({ url: VIDEO_CALLS_URL, active: true })
+  chrome.notifications.clear(notifyId)
+  stopSound()
 })

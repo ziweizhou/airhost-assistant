@@ -7,12 +7,20 @@ export const SOUNDS = [
   { id: 'r3', name: 'Real Ring 03', file: 'sounds/real-03.wav' },
 ]
 
+let audio = null
 export const playSound = (id, duration = 5000) => {
   const sound = SOUNDS.find(s => s.id === id )
   if (!sound) return
   
-  const audio = new Audio(chrome.runtime.getURL(sound.file))
+  audio = new Audio(chrome.runtime.getURL(sound.file))
   audio.loop = true
   audio.play()
   setTimeout(() => audio.pause(), duration)
+}
+
+export const stopSound = () => {
+  if (audio) {
+    audio.pause()
+    audio = null
+  }
 }
