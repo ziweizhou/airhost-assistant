@@ -4,8 +4,7 @@ html {
 }
 
 body {
-  width: 300px !important;
+  width: 400px !important;
   height: auto !important;
-  min-height: 100px;
-  padding: 10px;
+  min-height: 200px;
 }

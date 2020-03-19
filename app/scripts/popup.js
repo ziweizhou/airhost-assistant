@@ -6,3 +6,4 @@ ReactDOM.render(
   <PopupApp />,
   document.getElementById('app')
 )
+

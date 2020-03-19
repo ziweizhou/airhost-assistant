@@ -1,43 +1,46 @@
-import ActionCable from 'actioncable'
+import { playSound } from './lib/sounds'
 
-const WS_URL = 'ws://airhost:3000/cable'
-const CHANNEL = { channel: 'VideoChatsChannel' }
-
-const playSound = ({ filename, duration = 5000 }) => {
-  const audio = new Audio(chrome.runtime.getURL(filename))
-  audio.loop = true
-  audio.play()
-  setTimeout(() => audio.pause(), duration)
-}
+const VIDEO_CALLS_URL = 'http://airhost:3000/video_chats'
 
 function postNotification () {
-  chrome.notifications.create({
-    type: 'basic',
-    title: 'New video chat!',
-    message: 'New video chat received.',
-    iconUrl: 'images/icon-128.png'
+  chrome.storage.local.get(settings => {
+    console.log(settings)
+    
+    if (settings.enabled) {
+      chrome.notifications.create({
+        type: 'basic',
+        title: 'New Video Call',
+        message: 'New video chat requested.',
+        iconUrl: 'images/icon-128.png',
+        isClickable: true
+      })
+      
+      playSound(settings.ringtone)
+    }
   })
-  const audio = new Audio(chrome.runtime.getURL('ring.wav'))
-  audio.loop = true
-  audio.play()
-  setTimeout(() => audio.pause(), 5000)
 }
 
-let cable = ActionCable.createConsumer(WS_URL)
-cable.subscriptions.create(CHANNEL, {
-  received: data => {
-    if (data.type === 'new_video_chat') {
+chrome.runtime.onMessage.addListener(message => {
+  console.log('received message', message)
+  switch (message.type) {
+    case 'connected':
+      window.localStorage['connected'] = '1'
+      break
+    case 'disconnected':
+      window.localStorage['connected'] = '0'
+      break
+    case 'new_video_chat':
       postNotification()
-    }
+      break
   }
+  
+  return true
 })
 
-chrome.runtime.onMessage.addListener(message => {
-  console.log(message)
-  if (message.type === 'play_sound') {
-    playSound({
-      filename: message.filename,
-      duration: 2000
-    })
+chrome.tabs.onRemoved.addListener(tabId => {
+  if (String(tabId) === window.localStorage['agent_tab_id']) {
+    delete window.localStorage['agent_tab_id']
+    delete window.localStorage['connected']
+    chrome.runtime.sendMessage({ type: 'disconnected' })
   }
 })
