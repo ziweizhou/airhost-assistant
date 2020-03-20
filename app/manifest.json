@@ -23,10 +23,12 @@
     "default_title": "__MSG_browserActionTitle__",
     "default_popup": "pages/popup.html"
   },
+  "externally_connectable": {
+    "matches": ["http://airhost:3000/bridge?extid=*"]
+  },
   "permissions": [
-    "tabs",
     "storage",
     "notifications",
-    "http://airhost:3000/ja/video_chats"
+    "http://airhost:3000/bridge?extid=*"
   ]
 }
