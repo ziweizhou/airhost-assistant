@@ -15,7 +15,9 @@ function postNotification () {
         requireInteraction: true
       })
       
-      playSound(settings.ringtone, settings.duration * 1000)
+      if (settings.duration) {
+        playSound(settings.ringtone, settings.duration * 1000)  
+      }
     }
   })
 }
