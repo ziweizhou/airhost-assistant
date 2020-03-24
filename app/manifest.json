@@ -24,11 +24,11 @@
     "default_popup": "pages/popup.html"
   },
   "externally_connectable": {
-    "matches": ["http://airhost:3000/bridge?extid=*"]
+    "matches": ["<bridge-url>?extid=*"]
   },
   "permissions": [
     "storage",
     "notifications",
-    "http://airhost:3000/bridge?extid=*"
+    "<bridge-url>?extid=*"
   ]
 }

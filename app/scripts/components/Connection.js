@@ -14,7 +14,7 @@ export default class Connection extends React.Component {
   }
   
   handleConnect () {
-    const bridgeUrl = `http://airhost:3000/bridge?extid=${extensionId}`
+    const bridgeUrl = `<bridge-url>?extid=${extensionId}`
     chrome.tabs.create({
       url: bridgeUrl,
       pinned: true,
