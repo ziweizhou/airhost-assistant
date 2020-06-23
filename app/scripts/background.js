@@ -9,9 +9,15 @@ function postNotification () {
     if (settings.enabled) {
       chrome.notifications.create({
         type: 'basic',
-        title: 'New Video Call',
-        message: 'New video chat requested.',
+        title: 'Mario Qiu',
+        message: 'House: AirHost Test Hotel.\nStay: March 13 ~ March 14',
         iconUrl: 'images/icon-128.png',
+        // items: [
+        //   { title: "House", message: "AirHost Hotel" },
+        //   { title: "Checkin", message: "March 13, 2020, Friday" },
+        //   { title: "Checkout", message: "March 14, 2020, Saturday" },
+        //   { title: "Number Of Guests", message: "2 Adult" }
+        // ],
         requireInteraction: true
       })
       
