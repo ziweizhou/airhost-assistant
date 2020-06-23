@@ -37,7 +37,7 @@ export default class Settings extends React.Component {
   
   componentDidMount() {
     getSettings().then(settings => {
-      console.log('got settings are %j', settings)
+      console.log('got settings are:', JSON.stringify(settings))
       this.setState({ ...this.state, ...settings })
     })
   }

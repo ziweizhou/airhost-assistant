@@ -23,14 +23,20 @@ function postNotification () {
 }
 
 chrome.runtime.onMessageExternal.addListener(message => {
-  console.log('received message', message)
-  switch (message.type) {
-    case 'ping':
-      cache.set('connected', true, 7)
-      break
-    case 'new_video_chat':
-      postNotification()
-      break
+  console.log('received external message:', JSON.stringify(message))
+  if (message.type === 'ping') {
+    cache.set('connected', true, 7)
+  } else if (message.type === 'new_video_chat') {
+    postNotification()
+  }
+  
+  return true
+})
+
+chrome.runtime.onMessage.addListener(message => {
+  console.log('received message:', JSON.stringify(message))
+  if (message.type === 'stop_ring') {
+      stopSound()
   }
   
   return true

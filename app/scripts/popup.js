@@ -7,3 +7,4 @@ ReactDOM.render(
   document.getElementById('app')
 )
 
+chrome.runtime.sendMessage({ type: 'stop_ring' })
