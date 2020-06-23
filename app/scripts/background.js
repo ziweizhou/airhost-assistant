@@ -9,15 +9,9 @@ function postNotification () {
     if (settings.enabled) {
       chrome.notifications.create({
         type: 'basic',
-        title: 'Mario Qiu',
-        message: 'House: AirHost Test Hotel.\nStay: March 13 ~ March 14',
+        title: 'Airhost',
+        message: 'New video chat requested.',
         iconUrl: 'images/icon-128.png',
-        // items: [
-        //   { title: "House", message: "AirHost Hotel" },
-        //   { title: "Checkin", message: "March 13, 2020, Friday" },
-        //   { title: "Checkout", message: "March 14, 2020, Saturday" },
-        //   { title: "Number Of Guests", message: "2 Adult" }
-        // ],
         requireInteraction: true
       })
       
@@ -47,3 +41,5 @@ chrome.notifications.onClicked.addListener(notifyId => {
   chrome.notifications.clear(notifyId)
   stopSound()
 })
+
+chrome.notifications.onClosed.addListener(() => stopSound())
