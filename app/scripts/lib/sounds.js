@@ -16,7 +16,17 @@ export const playSound = (id, duration = 5000) => {
   window.audio = new Audio(chrome.runtime.getURL(sound.file))
   window.audio.loop = true
   window.audio.play()
-  setTimeout(() => stopSound(), duration)
+  waitTimeout(() => stopSound(), duration)
+}
+
+const waitTimeout = (handler, duration) => {
+  if (duration > 0) {
+    window.setTimeout(() => {
+      waitTimeout(handler, duration - 1000)
+    }, 1000)
+  } else {
+    handler()
+  }
 }
 
 export const stopSound = () => {
