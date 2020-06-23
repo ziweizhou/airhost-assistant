@@ -1,6 +1,6 @@
 {
   "name": "airhost-assistant",
-  "version": "0.0.1",
+  "version": "1.1.0",
   "description": "Video call sound notification",
   "scripts": {
     "dev": "webextension-toolbox dev",
