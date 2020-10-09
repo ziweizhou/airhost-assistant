@@ -11,7 +11,10 @@ module.exports = {
       const bridgeUrl = process.env.AIRHOST_BRIDGE_URL || 'http://airhost:3000/bridge'
       config.plugins.push(new ReplaceInFileWebpackPlugin([{
         dir: `dist/${vendor}`,
-        files: ['manifest.json', 'scripts/popup.js'],
+        files: [
+          'manifest.json',
+          'scripts/popup.js'
+        ],
         rules: [{
           search: /https:\/\/cloud\.airhost\.co\/bridge/img,
           replace: bridgeUrl,

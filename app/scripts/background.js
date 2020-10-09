@@ -2,10 +2,10 @@ import { playSound, stopSound } from './lib/sounds'
 import cache from './lib/cache'
 import { getSettings } from './lib/settings'
 
-const VIDEO_CALLS_URL = 'http://airhost:3000/video_chats'
+const VIDEO_CALLS_URL = 'https://cloud.airhost.co/video_chats'
 
 function postNotification () {
-  getSettings().then(settings => {    
+  getSettings().then(settings => {
     if (settings.enabled) {
       chrome.notifications.create({
         type: 'basic',
@@ -14,9 +14,9 @@ function postNotification () {
         iconUrl: 'images/icon-128.png',
         requireInteraction: true
       })
-      
+
       if (settings.duration) {
-        playSound(settings.ringtone, settings.duration * 1000)  
+        playSound(settings.ringtone, settings.duration * 1000)
       }
     }
   })
@@ -29,7 +29,7 @@ chrome.runtime.onMessageExternal.addListener(message => {
   } else if (message.type === 'new_video_chat') {
     postNotification()
   }
-  
+
   return true
 })
 
@@ -38,7 +38,7 @@ chrome.runtime.onMessage.addListener(message => {
   if (message.type === 'stop_ring') {
       stopSound()
   }
-  
+
   return true
 })
 
